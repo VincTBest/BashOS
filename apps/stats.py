@@ -1,25 +1,32 @@
-import const
+import apps.fancylib as fl
 import time
 import main
 import datetime
 import readchar
 
-c = const.Colors()
-
+self_about = {"name": "FancyStats", "desc": "See system info and statistics.", "ver": "1.0.0", "hidden": False}
+app = fl.FancyApp(self_about)
 
 def get_about():
-    return {"name": "FancyStats", "desc": "See system info and statistics.", "ver": "1.0.0", "hidden": False}
+    return app.about
 
 def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
-    global c
-    print(f"{c.YELLOW}Stats:{c.RESET}")
+    app.printc("Stats:", app.c.ACCENT)
+
     apps = str(len(MODULES))
     if SANDBOXED: apps = "Sandboxed, can't display."
-    print(f"Apps: "+apps)
+    app.printc("Apps: "+apps)
+
+    commands = str(len(COMMANDS))
+    if SANDBOXED: commands = "Sandboxed, can't display."
+    app.printc("Commands: "+commands)
+
     uptime = datetime.timedelta(seconds=time.time()-main.START_TIME)
-    print(f"Uptime: {str(uptime)}")
+    app.printc("Uptime: "+str(uptime))
+
     action = readchar.readkey()
-    if action == "q" or action == "u" or action == "7" or action == readchar.key.PAGE_UP:
-        return None, const.DEFAULT_APP, None, None
-    const.clr()
+    if app.get_action(action, "quit"):
+        return None, app.DEF_APP, None, None
+    app.clr()
+
     return None, None, None, None
