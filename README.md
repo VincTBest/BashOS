@@ -52,6 +52,6 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
 If you want another example for a FancyLib app, you can check out FancyAppSelector or any app with the 'Fancy' prefix.
 
 ## Configuring BashOS
-
-- You can modify ```apps/fancylib.py``` to change the colors of Fancy apps.
-- You can change the default app by editing ```const.py```.
+Basic configuration settings can be found in config.json such as:
+- default_app: The default app
+- FancyColors: FancyLib's default colors.
