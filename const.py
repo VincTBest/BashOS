@@ -26,6 +26,7 @@ def init():
     DEFAULT_APP = CONFIG_FILE.value["default_app"]
 
 class Colors:
+    # Colors from: https://github.com/rene-d
     cols = {
         "BLACK" : "\033[0;30m",
         "RED" : "\033[0;31m",
