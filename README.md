@@ -12,7 +12,15 @@
     - Package 'requests'
 
 ## How to run:
-Open a console on the root directory and run ```source .venv/bin/activate``` to active venv (you should see a .venv behind your username), run ```python main.py``` to run the main file. After running it you will see a bunch of info messages and you will be thrown into FancyAppSelector. Use A; D/J; L/4; 6/Left; Right to navigate it. You can press S/K/5/Down to run the selected app, or W/I/8/Up to run it sandboxed (The app can't read or write the global store, won't know what other apps and commands exist, and won't be able to set what app to quit to, as it will always be the default app, which by default is FancyAppSelector.) and you can also press Q/U/7/PageUp to quit. If you forget any of these, just press any other button and the control scheme will be printed.
+Simply run ```run.bash``` (```bash run.bash```).
+
+###### Or
+
+Open a console on the root directory and run ```source .venv/bin/activate``` to active venv (you should see a .venv behind your username), run ```python main.py``` to run the main file.
+
+### Quick Guide:
+
+After running it you will see a bunch of info messages and you will be thrown into FancyAppSelector. Use A; D/J; L/4; 6/Left; Right to navigate it. You can press S/K/5/Down to run the selected app, or W/I/8/Up to run it sandboxed (The app can't read or write the global store, won't know what other apps and commands exist, and won't be able to set what app to quit to, as it will always be the default app, which by default is FancyAppSelector.) and you can also press Q/U/7/PageUp to quit. If you forget any of these, just press any other button and the control scheme will be printed.
 
 ## How to make an app:
 Making an app is very straight-forwards and easy. First, make a new python file in the ```apps``` folder. You can name it anything you want.
