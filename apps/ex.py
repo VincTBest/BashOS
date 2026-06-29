@@ -5,4 +5,5 @@ def get_about():
 
 def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
     print("Hello!") # Print a message
-    return None, const.DEFAULT_APP, None, None # Open 'system' app (return stop_running: Bool; new_module_name: String; new_store: Dict; run_sandboxed: Bool)
+    return None, const.DEFAULT_APP, None, None
+    # Open the default app (return stop_running: Bool; new_module_name: String (Always const.DEFAULT_APP when sandboxed); new_store: Dict; run_sandboxed: Bool)

@@ -8,7 +8,7 @@ def run(*unused):
     print("FancyLib is a library. Exiting...")
     return None, const.DEFAULT_APP, None, None
 
-def get_apps(MODULES: dict, get_hidden: bool):
+def get_apps(MODULES: dict, get_hidden: bool=False):
     apps = []
     for k,v in MODULES.items():
         about = v.get_about()
@@ -89,5 +89,6 @@ class FancyApp:
         key = readchar.readkey()
         return self.get_action(key, action)
 
-    def printc(self, text, color):
+    def printc(self, text, color=None):
+        if color is None: color=self.c.RESET
         print(color+text+self.c.RESET)
