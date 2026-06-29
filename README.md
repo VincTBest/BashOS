@@ -51,6 +51,25 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
 ```
 If you want another example for a FancyLib app, you can check out FancyAppSelector or any app with the 'Fancy' prefix.
 
+### Const.py
+Const.py has a few utilities that can come in handy when making an app.
+- const.DEFAULT_APP: The default app.
+- const.Const(): A class used for storing variables that throw an error when modified.
+- const.Colors(): ANSI Color Codes.
+
+#### How to use colors:
+```python
+import const
+
+c = const.Colors()
+
+print(c.cols["RED"]+"This is red!"+c.cols["RESET"])
+print(c.cols["GREEN"]+"This is green!"+c.cols["RESET"])
+print(c.cols["BLUE"]+"This is blue!"+c.cols["RESET"])
+print(c.cols["RESET"]+"This is white!"+c.cols["RESET"])
+print(c.cols["CROSSED"]+"This is crossed out!"+c.cols["RESET"])
+```
+
 ## Configuring BashOS
 Basic configuration settings can be found in config.json such as:
 - default_app: The default app
