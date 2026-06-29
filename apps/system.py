@@ -2,7 +2,7 @@ import const
 import main
 
 def get_about():
-    return {"name": "System", "desc": "A basic app launcher.", "ver": "0.0.1", "hidden": True}
+    return {"name": "System", "desc": "A basic app launcher.", "ver": "0.1.0", "hidden": True}
 
 def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
     if SANDBOXED:
@@ -30,11 +30,6 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
         print("[app_name] ver")
         print("[app_name] about")
         print("[app_name] about_kv")
-        print("\nSecurity testers (All pathed):")
-        print("Change default app:")
-        print("__Escape1")
-        print("__Escape2")
-        print("__Escape3")
     elif command[0] == "apps":
         for k,v in MODULES.items():
             if not v.get_about()["hidden"]:
