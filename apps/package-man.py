@@ -1,15 +1,16 @@
 import importlib
 from importlib.machinery import SourceFileLoader
 import importlib.util
-import apps.fancylib as flib
 import urllib.request
+from urllib.parse import urlparse
 import os
 import shutil
+import apps.fancylib as flib
 
 about = {
     "name"   : "Pack-Man",
     "desc"   : "A package manager for BashOS.",
-    "ver"    : "0.0.0",
+    "ver"    : "1.0.0",
     "hidden" : False,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/package-man.py",
@@ -23,21 +24,26 @@ def has_func(obj, name):
     except AttributeError:
         return False
 
+def load_remote_module(url):
+    path, _ = urllib.request.urlretrieve(url)
+
+    loader = SourceFileLoader("updated_app", path)
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+
+    return module, path
+
 def check_for_update(app_name, url, MODULES):
-    if url is not None:
-        upgrade_url = url
-        response = urllib.request.urlretrieve(upgrade_url)
-        path = response[0]
+    if url is None:
+        return False, "", "", ""
 
-        loader = SourceFileLoader("updated_app", path)
-        spec = importlib.util.spec_from_loader(loader.name, loader)
-        updated = importlib.util.module_from_spec(spec)
-        loader.exec_module(updated)
+    updated, path = load_remote_module(url)
 
-        new_ver = updated.get_about()["ver"]
-        old_ver = MODULES[app_name].get_about()["ver"]
-        return new_ver!=old_ver, path, new_ver, old_ver
-    return False, "", "", ""
+    new_ver = updated.get_about()["ver"]
+    old_ver = MODULES[app_name].get_about()["ver"]
+
+    return new_ver != old_ver, path, new_ver, old_ver
 
 def get_about():
     return app.get_about()
@@ -74,21 +80,27 @@ def run(MODULES: dict, _STORE: dict, SANDBOXED: bool, COMMAND: dict):
         action = key
         s_action = action.split(" ")
         if s_action[0] == "upgrade":
-            upgrade_url = MODULES[s_action[1]].get_about()["upgrade_url"]
-            response = urllib.request.urlretrieve(upgrade_url)
-            path = response[0]
+            if len(s_action) < 2:
+                return None, None, None, None
 
-            loader = SourceFileLoader("updated_app", path)
-            spec = importlib.util.spec_from_loader(loader.name, loader)
-            updated = importlib.util.module_from_spec(spec)
-            loader.exec_module(updated)
+            if s_action[1] not in MODULES:
+                app.printc("Unknown app.", app.c.ERROR)
+                return None, None, None, None
+
+            upgrade_url = MODULES[s_action[1]].get_about().get("upgrade_url")
+            if not upgrade_url:
+                app.printc("This app cannot be upgraded.", app.c.ERROR)
+                return None, None, None, None
+
+            upgrade_url = MODULES[s_action[1]].get_about()["upgrade_url"]
+            updated, path = load_remote_module(upgrade_url)
 
             new_ver = updated.get_about()["ver"]
             old_ver = MODULES[s_action[1]].get_about()["ver"]
             clear = False
             app.clr()
             if new_ver != old_ver:
-                new_path = os.getcwd()+"/apps/"+s_action[1]+".py"
+                new_path = os.path.join(os.getcwd(), "apps", s_action[1] + ".py")
                 shutil.copyfile(path, new_path)
                 app.printc("App was upgraded! Relaunch BashOS for the changes to take affect.", app.c.cols["GREEN"])
                 #os.remove(path)
@@ -97,27 +109,38 @@ def run(MODULES: dict, _STORE: dict, SANDBOXED: bool, COMMAND: dict):
             os.remove(path)
 
         elif s_action[0] == "install":
+            if len(s_action) < 2:
+                return None, None, None, None
+
             upgrade_url = s_action[1]
             response = urllib.request.urlretrieve(upgrade_url)
             path = response[0]
 
-            new_path = os.getcwd()+"/apps/"+s_action[1].split("/")[-1]
+            filename = os.path.basename(urlparse(upgrade_url).path)
+            new_path = os.path.join(os.getcwd(), "apps", filename)
             shutil.copyfile(path, new_path)
             clear = False
             app.clr()
             app.printc("App was installed! Relaunch BashOS for the changes to take affect.", app.c.cols["GREEN"])
-            #os.remove(path)
+            os.remove(path)
 
         elif s_action[0] == "remove":
+            if len(s_action) < 2:
+                return None, None, None, None
+
             if input("Are you sure? (y/n) ").lower() == "y":
-                os.remove(os.getcwd()+"/apps/"+s_action[1]+".py")
+                os.remove(os.path.join(os.getcwd(), "apps", s_action[1] + ".py"))
 
         elif s_action[0] == "check_for_update":
+            if len(s_action) < 2:
+                return None, None, None, None
+
             has_update, path, _, _ = check_for_update(s_action[1], MODULES[s_action[1]].get_about()["upgrade_url"], MODULES)
             if has_update:
                 app.clr()
                 clear = False
                 print("There is an update available!")
+            os.remove(path)
 
         elif s_action[0] == "check_for_updates":
             app.clr()
@@ -126,6 +149,7 @@ def run(MODULES: dict, _STORE: dict, SANDBOXED: bool, COMMAND: dict):
                 if has_update:
                     clear = False
                     print(f"There is an update available for {k}!")
+                os.remove(path)
 
         elif s_action[0] == "help":
             app.clr()
