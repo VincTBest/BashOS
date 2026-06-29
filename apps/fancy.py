@@ -79,10 +79,10 @@ def run(MODULES: dict, _STORE: dict, SANDBOXED: bool, _COMMANDS: dict):
         # Quit
         return True, None, None, None
     else:
-        app.printc(f"Control Scheme :", app.c.GREEN)
-        app.printc(f"Left / Right  : A;D / J;L / 4;6 (Numpad) / Left;Right (Arrows)", app.c.LIGHT_GREEN)
-        app.printc(f"Quit          : Q   / U   / 7   (Numpad) / PageUp     (Arrows)", app.c.LIGHT_GREEN)
-        app.printc(f"Run           : S   / K   / 5   (Numpad) / Down       (Arrows)", app.c.LIGHT_GREEN)
-        app.printc(f"Run Sandboxed : W   / I   / 8   (Numpad) / Up         (Arrows)", app.c.LIGHT_GREEN)
+        app.printc(f"Control Scheme :", app.c.cols["GREEN"])
+        app.printc(f"Left / Right  : A;D / J;L / 4;6 (Numpad) / Left;Right (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"Quit          : Q   / U   / 7   (Numpad) / PageUp     (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"Run           : S   / K   / 5   (Numpad) / Down       (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"Run Sandboxed : W   / I   / 8   (Numpad) / Up         (Arrows)", app.c.cols["LIGHT_GREEN"])
 
     return None, None, None, None

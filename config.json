@@ -1,0 +1,10 @@
+{
+  "default_app": "fancy",
+  "FancyColors": {
+    "accent": "yellow",
+    "dark"  : "dark_gray",
+    "mid"   : "light_gray",
+    "bright": "light_white",
+    "error" : "red"
+  }
+}

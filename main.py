@@ -4,21 +4,8 @@ import json
 import time
 import const
 
-try:
-    import readchar
-except ModuleNotFoundError:
-    print("Installing module 'readchar'...")
-    os.system("python -m ensurepip --upgrade")
-    os.system("pip install readchar")
-    import readchar
-
-try:
-    import requests
-except ModuleNotFoundError:
-    print("Installing module 'requests'...")
-    os.system("python -m ensurepip --upgrade")
-    os.system("pip install requests")
-    import requests
+import readchar
+import requests
 
 START_TIME = time.time()
 MODULES = {}
@@ -30,6 +17,8 @@ MONITOR = []
 c = const.Colors()
 
 CURRENT_APP = "default"
+
+const.init()
 
 first_default = const.Const(const.DEFAULT_APP)
 
@@ -82,20 +71,20 @@ def load_modules():
             except AttributeError: has_info = False
 
             if has_run and has_about:
-                print(f"{c.DARK_GRAY}Imported package: "+file+" as "+filename+" into MODULES."+c.RESET)
+                print(f"{c.cols["DARK_GRAY"]}Imported package: "+file+" as "+filename+" into MODULES."+c.cols["RESET"])
                 MODULES[filename] = module # Add package to global packages
             else:
                 if not has_info:
-                    if not has_run: print(f"{c.RED}Module {file} does not have a run() function! See an example in ex.py.{c.RESET}")
-                    if not has_about: print(f"{c.RED}Module {file} does not have a get_about() function! See an example in ex.py.{c.RESET}")
-                    print(f"{c.RED}{file} will not be imported.{c.RESET}")
+                    if not has_run: print(f"{c.cols["RED"]}Module {file} does not have a run() function! See an example in ex.py.{c.cols["RESET"]}")
+                    if not has_about: print(f"{c.cols["RED"]}Module {file} does not have a get_about() function! See an example in ex.py.{c.cols["RESET"]}")
+                    print(f"{c.cols["RED"]}{file} will not be imported.{c.cols["RESET"]}")
                 else:
-                    print(f"{c.DARK_GRAY}Imported monitor: {file}.{c.RESET}")
+                    print(f"{c.cols["DARK_GRAY"]}Imported monitor: {file}.{c.cols["RESET"]}")
                     a1,a2,a3=module.get_info()
                     MONITOR = [a1,a2,a3]
             # print(module.get_about())
         else:
-            print(f"{c.CYAN}Not a package: "+file+c.RESET)
+            print(f"{c.cols["CYAN"]}Not a package: "+file+c.cols["RESET"])
 
 
 def load_external_commands():
@@ -109,11 +98,11 @@ def load_external_commands():
             # This is a python file. Import it.
             filename = file.removesuffix(".py")
             module = importlib.import_module("commands."+filename)
-            print(f"{c.DARK_GRAY}Imported external command: "+file+" as "+filename+f" into EXT_COMMANDS.{c.RESET}")
+            print(f"{c.cols["DARK_GRAY"]}Imported external command: "+file+" as "+filename+f" into EXT_COMMANDS.{c.cols["RESET"]}")
             EXT_COMMANDS[filename] = module # Add package to global packages
             # print(module.get_about())
         else:
-            print(f"{c.CYAN}Not an external command: "+file+f"{c.RESET}")
+            print(f"{c.cols["CYAN"]}Not an external command: "+file+f"{c.cols["RESET"]}")
 
 
 def main():
@@ -127,7 +116,7 @@ def main():
     default = const.DEFAULT_APP
     while RUNNING:
         if first_default.value != const.DEFAULT_APP:
-            print(f"{c.RED}Default app was modified by an app. Resetting and exiting to it...{c.RESET}")
+            print(f"{c.cols["RED"]}Default app was modified by an app. Resetting and exiting to it...{c.cols["RESET"]}")
             CURRENT_APP = first_default.value
             const.DEFAULT_APP = first_default.value
 

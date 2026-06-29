@@ -1,7 +1,6 @@
 import const
 import main
 
-
 def get_about():
     return {"name": "System", "desc": "A basic app launcher.", "ver": "0.0.1", "hidden": True}
 

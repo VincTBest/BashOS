@@ -50,13 +50,14 @@ class FancyApp:
         # Got from const.py:
         self.DEF_APP = const.DEFAULT_APP
         self.clr = const.clr
+        self.CONFIG = const.CONFIG_FILE.value
         # Colors:
         self.c = const.Colors()
-        self.c.ACCENT = self.c.YELLOW
-        self.c.DARK   = self.c.DARK_GRAY
-        self.c.MID    = self.c.LIGHT_GRAY
-        self.c.BRIGHT = self.c.LIGHT_WHITE
-        self.c.ERROR  = self.c.RED
+        self.c.ACCENT = self.c.cols[str(self.CONFIG["FancyColors"]["accent"]).upper()]
+        self.c.DARK   = self.c.cols[str(self.CONFIG["FancyColors"]["dark"]).upper()]
+        self.c.MID    = self.c.cols[str(self.CONFIG["FancyColors"]["mid"]).upper()]
+        self.c.BRIGHT = self.c.cols[str(self.CONFIG["FancyColors"]["bright"]).upper()]
+        self.c.ERROR  = self.c.cols[str(self.CONFIG["FancyColors"]["error"]).upper()]
         # I/O
         self.input_actions = {
             "left" : ["a", "j", "4", "\x1b[D", readchar.key.LEFT],
@@ -90,5 +91,5 @@ class FancyApp:
         return self.get_action(key, action)
 
     def printc(self, text, color=None):
-        if color is None: color=self.c.RESET
-        print(color+text+self.c.RESET)
+        if color is None: color=self.c.cols["RESET"]
+        print(color+text+self.c.cols["RESET"])

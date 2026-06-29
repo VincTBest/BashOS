@@ -1,2 +1,2 @@
 def get_infoDISABLE():
-    return "Example Runtime", lambda: print(), lambda: print()
+    return "Example Monitor", lambda: print(), lambda: print()
