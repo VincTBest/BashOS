@@ -2,7 +2,9 @@ import const
 import readchar
 
 def get_about():
-    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"1.0","hidden":True}
+    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"1.1","hidden":True,
+    "author" : "VincTBest",
+    "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancylib.py",}
 
 def run(*unused):
     print("FancyLib is a library. Exiting...")

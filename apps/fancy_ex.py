@@ -1,7 +1,9 @@
 import apps.fancylib as fl
 
 self_about = {
-    "name": "Fancy Example", "desc": "An Example App, but with FancyLib.", "ver": "1.0.0", "hidden": False
+    "name": "Fancy Example", "desc": "An Example App, but with FancyLib.", "ver": "1.0.0", "hidden": False,
+    "author" : "Your Name",
+    "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancy_ex.py",
 }
 app = fl.FancyApp(self_about)
 

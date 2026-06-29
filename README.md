@@ -10,6 +10,7 @@
 - Python
     - Package 'readchar'
     - Package 'requests'
+    - Package 'urllib'
     - ANSI colors from https://github.com/rene-d
 
 ## How to run:
@@ -30,7 +31,9 @@ This is an example app.
 import const
 
 def get_about():
-    return {"name": "Example", "desc": "An Example App.", "ver": "1.0.0", "hidden": False}
+    return {"name": "Example", "desc": "An Example App.", "ver": "1.0.0", "hidden": False,
+    "author" : "Your Name",
+    "upgrade_url": "https://github.com/VincTBest/BashOS/apps/ex.py",} # The URL to your app. (for upgrades, set it to None if you don't have one.)
 
 def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
     print("Hello!") # Print a message
@@ -46,7 +49,9 @@ This is the same program, but made with FancyLib. Most of FancyLib isn't used, b
 import apps.fancylib as fl
 
 self_about = {
-    "name": "Example", "desc": "An Example App, but with FancyLib.", "ver": "1.0.0", "hidden": False
+    "name": "Fancy Example", "desc": "An Example App, but with FancyLib.", "ver": "1.0.0", "hidden": False,
+    "author" : "Your Name",
+    "upgrade_url": "https://github.com/VincTBest/BashOS/apps/fancy_ex.py",
 }
 app = fl.FancyApp(self_about)
 

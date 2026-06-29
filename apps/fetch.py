@@ -2,7 +2,10 @@ import const
 import readchar
 import requests
 
-about = {"name": "Fetch", "desc": "Fetch APIs from the web.", "ver": "1.0.0", "hidden": False}
+about = {"name": "Fetch", "desc": "Fetch APIs from the web.", "ver": "1.0.0", "hidden": False,
+    "author" : "VincTBest",
+    "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fetch.py",}
+
 c = const.Colors()
 
 def get_about():

@@ -4,7 +4,9 @@ import main
 import datetime
 import readchar
 
-self_about = {"name": "FancyStats", "desc": "See system info and statistics.", "ver": "1.0.0", "hidden": False}
+self_about = {"name": "FancyStats", "desc": "See system info and statistics.", "ver": "1.0.0", "hidden": False,
+    "author" : "VincTBest",
+    "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/stats.py",}
 app = fl.FancyApp(self_about)
 
 def get_about():

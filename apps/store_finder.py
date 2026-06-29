@@ -2,7 +2,9 @@ from main import save_store, load_store
 import const
 
 def get_about():
-    return {"name": "StoreFinder", "desc": "Read and modify values form the global store.", "ver": "0.1.0", "hidden": False}
+    return {"name": "StoreFinder", "desc": "Read and modify values form the global store.", "ver": "0.1.0", "hidden": False,
+    "author" : "VincTBest",
+    "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/store_finder.py",}
 
 def print_dict(printable_dict: dict):
     for key, value in printable_dict.items():

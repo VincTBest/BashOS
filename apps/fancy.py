@@ -5,7 +5,9 @@ SEL_IDX = 0
 SEL_ID = "system"
 
 self_about = {
-    "name": "Fancy App Selector", "desc": "A simple and fancy app selector.", "ver": "0.0.0", "hidden": False
+    "name": "Fancy App Selector", "desc": "A simple and fancy app selector.", "ver": "1.0.0", "hidden": False,
+    "author" : "VincTBest",
+    "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancy.py",
 }
 app = fl.FancyApp(self_about)
 
