@@ -6,7 +6,7 @@ import readchar
 # ℱ𝒶𝓃𝒸𝓎Lib
 
 def get_about():
-    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"2.0a-2","hidden":True,
+    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"2.0a-3","hidden":True,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancylib.py",}
 
@@ -308,11 +308,12 @@ class LTex:
     }
 
     @staticmethod
-    def box(x, w, h, double=False):
+    def box(x, y, w, h, double=False):
         """
         Returns a list of strings representing a box.
 
         :param x: left padding (spaces)
+        :param y: above padding (empty lines)
         :param w: interior width
         :param h: interior height
         :param double: use double-line borders
@@ -321,9 +322,14 @@ class LTex:
         b = LTex.DBOX if double else LTex.BOX
         pad = " " * x
 
-        lines = [
+        lines = []
+
+        for i in range(y):
+            lines.append("")
+
+        lines.append(
             pad + b["TL"] + b["H"] * w + b["TR"]
-        ]
+        )
 
         for _ in range(h):
             lines.append(
@@ -362,3 +368,95 @@ class LTex:
                 LTex.BLOCK["FULL"] * filled +
                 LTex.BLOCK["LIGHT"] * (x - filled)
         )
+
+class Drawable:
+    def __init__(self, x=None, y=None, w=None, h=None, text=None, prefab=None):
+        if x is None: x = 0
+        if y is None: y = 0
+        if w is None: w = 0
+        if h is None: h = 0
+        if text is None: text = ""
+        if prefab is None: prefab = "label"
+        self.pos = (x,y)
+        self.size = (w, h)
+        self.text = text
+        self.prefab = prefab
+        self.lines = []
+
+    def render_dont_clip(self, ltx: LTex):
+        if self.prefab.startswith("label"):
+            return [self.text]
+        elif self.prefab.startswith("box"):
+            return ltx.box(self.pos[0], self.pos[1], self.size[0], self.size[1])
+        return None
+
+    def render(self, ltx: LTex):
+        renderable = self.render_dont_clip(ltx)
+
+        if self.size == (0, 0):
+            self.lines = renderable
+        else:
+            new_renderable = []
+            for line in renderable:
+                new_renderable.append(line[:self.size[0]])
+            self.lines = new_renderable
+
+        if self.prefab.endswith("noclip"):
+            self.lines = self.render_dont_clip(ltx)
+            return self.lines
+        return self.lines
+
+    def get_lines(self):
+        return self.lines
+
+class LTMApp:
+    def __init__(self, about: dict):
+        self.app = FancyApp(about)
+        self.ltx = LTex()
+        self.screen = (0, 0)
+        self.key = ""
+        self.items = []
+
+    def setup(self, screen_w=270, screen_h=60):
+        self.screen = (screen_w, screen_h)
+
+    def begin(self):
+        self.app.clr()
+
+    def end(self):
+        self.key = read_input()
+
+    def add_item(self, item: Drawable):
+        self.items.append(item)
+        self.items[-1].lines = self.items[-1].render(self.ltx)
+
+    def draw(self):
+        width, height = self.screen
+
+        # Create an empty framebuffer
+        buffer = [[" " for _ in range(width)] for _ in range(height)]
+
+        # Draw every item (first added = back)
+        for item in self.items:
+            lines = item.get_lines()
+            x0, y0 = item.pos
+
+            for y, line in enumerate(lines):
+                sy = y0 + y
+                if sy < 0 or sy >= height:
+                    continue
+
+                for x, ch in enumerate(line):
+                    sx = x0 + x
+                    if sx < 0 or sx >= width:
+                        continue
+
+                    # Transparent pixels
+                    if ch == " ":
+                        continue
+
+                    buffer[sy][sx] = ch
+
+        # Display framebuffer
+        for row in buffer:
+            print("".join(row))
