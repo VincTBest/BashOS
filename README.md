@@ -51,7 +51,7 @@ import apps.fancylib as fl
 self_about = {
     "name": "Fancy Example", "desc": "An Example App, but with FancyLib.", "ver": "1.0.0", "hidden": False,
     "author" : "Your Name",
-    "upgrade_url": "https://github.com/VincTBest/BashOS/apps/fancy_ex.py",
+    "upgrade_url": "https://github.com/VincTBest/BashOS/apps/fancy_ex.py", # The URL to your app.
 }
 app = fl.FancyApp(self_about)
 
@@ -65,6 +65,55 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
 ```
 If you want another example for a FancyLib app, you can check out FancyAppSelector or any app with the 'Fancy' prefix.
 
+#### FancyLib Documentation
+
+##### Functions
+
+```
+get_apps(MODULES: dict, get_hidden: bool=False)
+Returns: APPS: dict
+
+get_commands(COMMANDS: dict)
+Returns: COMMANDS: dict
+
+read_input(input_type: str= "key", prompt: str= "> ")
+input_type: "key"; "char"; "input"
+Returns: The pressed char/key(s)
+
+is_indirect_match(string, match_this)
+Returns: string.lower() == match_this.lower()
+
+is_direct_match(string, match_this)
+Returns: string == match_this
+```
+
+##### Classes
+
+```
+FancyApp:
+
+    __init__(self, about: dict=None)
+    Returns: -
+    
+    get_about(self)
+    Returns: self.about
+
+    set_actions(self, actions)
+    Returns: -
+
+    add_action(self, name, keys)
+    Returns: -
+
+    get_action(self, key, action="quit")
+    Returns: The action was performed.
+
+    read_action(self, action)
+    Returns: The action was performed.
+
+    printc(self, text, color=None)
+    Returns: -
+```
+
 ### Const.py
 Const.py has a few utilities that can come in handy when making an app.
 - const.DEFAULT_APP: The default app.
@@ -76,6 +125,8 @@ Const.py has a few utilities that can come in handy when making an app.
 import const
 
 c = const.Colors()
+
+# RESET turns the color to "LIGHT_WHITE" and "END".
 
 print(c.cols["RED"]+"This is red!"+c.cols["RESET"])
 print(c.cols["GREEN"]+"This is green!"+c.cols["RESET"])
