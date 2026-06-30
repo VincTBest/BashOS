@@ -10,7 +10,7 @@ import apps.fancylib as flib
 about = {
     "name"   : "Pack-Man",
     "desc"   : "A package manager for BashOS.",
-    "ver"    : "1.0.0",
+    "ver"    : "1.0.1",
     "hidden" : False,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/package-man.py",
@@ -135,21 +135,27 @@ def run(MODULES: dict, _STORE: dict, SANDBOXED: bool, COMMAND: dict):
             if len(s_action) < 2:
                 return None, None, None, None
 
-            has_update, path, _, _ = check_for_update(s_action[1], MODULES[s_action[1]].get_about()["upgrade_url"], MODULES)
+            has_update, path, ov, nv = check_for_update(s_action[1], MODULES[s_action[1]].get_about()["upgrade_url"], MODULES)
             if has_update:
                 app.clr()
                 clear = False
-                print("There is an update available!")
-            os.remove(path)
+                print(f"There is an update available. {ov} -> {nv}.")
+            try:
+                os.remove(path)
+            except FileNotFoundError:
+                pass
 
         elif s_action[0] == "check_for_updates":
             app.clr()
             for k,v in MODULES.items():
-                has_update, path, _, _ = check_for_update(k, MODULES[k].get_about()["upgrade_url"], MODULES)
+                has_update, path, nv, ov = check_for_update(k, MODULES[k].get_about()["upgrade_url"], MODULES)
                 if has_update:
                     clear = False
-                    print(f"There is an update available for {k}!")
-                os.remove(path)
+                    print(f"There is an update available for {k}. {ov} -> {nv}.")
+                try:
+                    os.remove(path)
+                except FileNotFoundError:
+                    pass
 
         elif s_action[0] == "help":
             app.clr()
