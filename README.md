@@ -12,6 +12,7 @@
     - Package 'requests'
     - Package 'urllib'
     - Package 'psutil'
+    - Package 'pyperclip'
     - ANSI colors from https://github.com/rene-d
 
 ## How to run:

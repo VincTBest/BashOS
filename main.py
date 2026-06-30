@@ -8,6 +8,7 @@ import readchar
 import requests
 import psutil
 import urllib
+import pyperclip
 
 START_TIME = time.time()
 MODULES = {}
