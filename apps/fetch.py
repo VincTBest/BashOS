@@ -1,7 +1,7 @@
 import const
 import requests
 
-about = {"name": "Fetch", "desc": "Fetch APIs from the web.", "ver": "1.0.2", "hidden": False,
+about = {"name": "Fetch", "desc": "Fetch APIs from the web.", "ver": "1.0.3", "hidden": False,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fetch.py",}
 
@@ -23,8 +23,9 @@ def run(*args):
                 print(c.cols["red"]+"Error! Status code: "+str(response.status_code)+"."+c.cols["RESET"])
 
             response.close()
-        except:
+        except (requests.ConnectionError, requests.ConnectTimeout, requests.HTTPError, ValueError,  requests.RequestException):
             print(c.cols["red"]+f"Error! Could not fetch from {action}."+c.cols["RESET"])
+            return None, "fetch", None, None
     else:
         return None, const.DEFAULT_APP, None, None
 
