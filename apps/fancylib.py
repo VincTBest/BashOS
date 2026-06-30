@@ -1,8 +1,10 @@
+import builtins
+
 import const
 import readchar
 
 def get_about():
-    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"1.1","hidden":True,
+    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"2.0a","hidden":True,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancylib.py",}
 
@@ -52,6 +54,7 @@ class FancyApp:
         # Got from const.py:
         self.DEF_APP = const.DEFAULT_APP
         self.clr = const.clr
+        self.clamp = const.clamp
         self.CONFIG = const.CONFIG_FILE.value
         # Colors:
         self.c = const.Colors()
@@ -67,6 +70,7 @@ class FancyApp:
             "quit" : ["q", "u", "7", "\x1b[5~", readchar.key.PAGE_UP],
             "run"  : ["s", "k", "5", "\x1b[B", readchar.key.DOWN],
             "s_run": ["w", "i", "8", "\x1b[A", readchar.key.UP],
+            "press": ["e", "o", "9", "______", readchar.key.ENTER]
         }
         # About
         if about is None:
@@ -75,6 +79,11 @@ class FancyApp:
         # Commands
         self.command_exit = "exit"
         self.command_help = "help"
+        # UI
+        self.button_func = None
+        self.button_idx = 0
+        self.buttons = {}
+        self.checkbox_chars = ["-","X"]
 
     def get_about(self):
         return self.about
@@ -95,3 +104,106 @@ class FancyApp:
     def printc(self, text, color=None):
         if color is None: color=self.c.cols["RESET"]
         print(color+text+self.c.cols["RESET"])
+
+    # TODO: Add buttons           DONE
+    # TODO: Add checkboxes        DONE
+    # TODO: Add sliders           DONE
+    # TODO: Add input fields      x
+    # TODO: Add horizontal layout x
+    # TODO: Add BIOS-like look    x
+
+    def title(self, text):
+        self.printc(text, self.c.ACCENT)
+
+    def subtitle(self, text):
+        self.printc(text, self.c.BRIGHT)
+
+    def separator(self, length=20):
+        self.printc("―"*length, self.c.DARK)
+
+    def _elem_slider(self, idx, mode: str):
+        this = self.buttons[idx]
+        ex = this["extra"]
+
+        # update value
+        if mode == "left":
+            ex["value"] -= ex["step"]
+        elif mode == "right":
+            ex["value"] += ex["step"]
+
+        # clamp value
+        ex["value"] = max(ex["low"], min(ex["high"], ex["value"]))
+
+        # build slider bar
+        total_steps = int((ex["high"] - ex["low"]) / ex["step"])
+        pos = int((ex["value"] - ex["low"]) / ex["step"])
+
+        bar = ["―"] * (total_steps+1)
+        if 0 <= pos < total_steps+1:
+            bar[pos] = "O"
+
+        this["text"] = "[" + "".join(bar) + f"] {ex['value']}"
+
+    def get_slider(self, idx):
+        return int(self.buttons[idx]["extra"]["value"])
+
+    def make_slider(self, idx: int, low=0, high=10, step=1, default_value=None):
+        self.make_button(idx, "", self._elem_slider, {"value": low or default_value, "low": low, "high": high, "step": step})
+        self.buttons[idx]["text"] = ""
+        self._elem_slider(idx, "wake")
+
+    def _elem_checkbox(self, idx, mode):
+        this = self.buttons[idx]
+        if mode == "press":
+            this["extra"]["state"] = not this["extra"]["state"]
+            if this["extra"]["state"]:
+                this["text"] = this["extra"]["o_text"]+f" [{self.checkbox_chars[1]}]"
+            else:
+                this["text"] = this["extra"]["o_text"]+f" [{self.checkbox_chars[0]}]"
+
+    def get_checkbox(self, idx):
+        return self.buttons[idx]["extra"]["state"]==True
+
+    def make_checkbox(self, identifyer: int, text: str, default_state=False):
+        self.make_button(identifyer, "", self._elem_checkbox, {"state": default_state, "o_text": text})
+        self.buttons[identifyer]["text"] = text+f" [{self.checkbox_chars[0]}]"
+        if default_state: self.buttons[identifyer]["text"] = text+f" [{self.checkbox_chars[1]}]"
+
+    def make_button(self, identifyer: int, text: str, func: object, extra: dict=None):
+        self.buttons[identifyer] = {"text": f"[{text}]", "sel": False, "func": func, "extra": extra}
+
+    def display(self, identifyer: int):
+        """
+        Displays and updates an element.
+        :param identifyer: Integer; The identifyer the element was defined as. Only display an element once.
+        :return: None
+        """
+        button = self.buttons[identifyer]
+        button["sel"] = identifyer == self.button_idx
+        color = self.c.cols["RESET"]
+        if not button["sel"]:
+            color = self.c.MID
+        else:
+            self.button_func = button["func"]
+        self.printc(f"{button["text"]}", color)
+
+    def process_nav(self, key):
+        if self.get_action(key, "s_run"): # Up
+            self.button_idx -= 1
+
+        elif self.get_action(key, "run"): # Down
+            self.button_idx += 1
+
+        elif self.get_action(key, "left"): # Left
+            if self.button_func is not None:
+                self.button_func(self.button_idx, "left")
+
+        elif self.get_action(key, "right"): # Right
+            if self.button_func is not None:
+                self.button_func(self.button_idx, "right")
+
+        elif self.get_action(key, "press"):
+            if self.button_func is not None:
+                self.button_func(self.button_idx, "press")
+
+        self.button_idx = self.clamp(self.button_idx, 0, len(self.buttons)-1)
