@@ -3,8 +3,10 @@ import builtins
 import const
 import readchar
 
+# ℱ𝒶𝓃𝒸𝓎Lib
+
 def get_about():
-    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"2.0a","hidden":True,
+    return {"name":"FancyLib","desc":"A library for making Fancy apps.","ver":"2.0a-2","hidden":True,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancylib.py",}
 
@@ -207,3 +209,100 @@ class FancyApp:
                 self.button_func(self.button_idx, "press")
 
         self.button_idx = self.clamp(self.button_idx, 0, len(self.buttons)-1)
+
+class LTex:
+    # Box drawing
+    BOX = {
+        "H": "─",
+        "V": "│",
+        "TL": "┌",
+        "TR": "┐",
+        "BL": "└",
+        "BR": "┘",
+        "L": "├",
+        "R": "┤",
+        "T": "┬",
+        "B": "┴",
+        "C": "┼",
+    }
+
+    # Double box drawing
+    DBOX = {
+        "H": "═",
+        "V": "║",
+        "TL": "╔",
+        "TR": "╗",
+        "BL": "╚",
+        "BR": "╝",
+        "L": "╠",
+        "R": "╣",
+        "T": "╦",
+        "B": "╩",
+        "C": "╬",
+    }
+
+    # Block elements
+    BLOCK = {
+        "FULL": "█",
+        "DARK": "▓",
+        "MEDIUM": "▒",
+        "LIGHT": "░",
+        "UPPER": "▀",
+        "LOWER": "▄",
+        "SQUARE": "■",
+    }
+
+    # Arrows
+    ARROW = {
+        "UP": "↑",
+        "DOWN": "↓",
+        "LEFT": "←",
+        "RIGHT": "→",
+        "TRI_RIGHT": "►",
+        "TRI_LEFT": "◄",
+        "TRI_UP": "▲",
+        "TRI_DOWN": "▼",
+    }
+
+    # Geometric
+    SHAPE = {
+        "CIRCLE": "○",
+        "CIRCLE_FILLED": "●",
+        "SQUARE": "□",
+        "SQUARE_FILLED": "■",
+        "DIAMOND": "♦",
+        "TRIANGLE": "▲",
+    }
+
+    # Card suits
+    SUIT = {
+        "SPADE": "♠",
+        "HEART": "♥",
+        "DIAMOND": "♦",
+        "CLUB": "♣",
+    }
+
+    # Symbols
+    SYMBOL = {
+        "CHECK": "√",
+        "PLUS_MINUS": "±",
+        "DEGREE": "°",
+        "INFINITY": "∞",
+        "APPROX": "≈",
+        "LE": "≤",
+        "GE": "≥",
+        "PI": "π",
+        "SIGMA": "Σ",
+        "ALPHA": "α",
+        "BETA": "β",
+    }
+
+    # CP437 classics
+    CLASSIC = {
+        "SMILE": "☺",
+        "SMILE_FILLED": "☻",
+        "NOTE": "♪",
+        "NOTES": "♫",
+        "MALE": "♂",
+        "FEMALE": "♀",
+    }
