@@ -7,7 +7,7 @@ SEL_FAV = False
 SHOW_HIDDEN = False
 
 self_about = {
-    "name": "Fancy App Selector", "desc": "A simple and fancy app selector.", "ver": "1.0.1", "hidden": False,
+    "name": "Fancy App Selector", "desc": "A simple and fancy app selector.", "ver": "1.0.2", "hidden": False,
     "author" : "VincTBest",
     "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/fancy.py",
 }
@@ -53,7 +53,7 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, _COMMANDS: dict):
     about_str = str(this_about["desc"])
     ansi = re.compile(r'\x1b\[[0-9;]*m')
     print_len = len(ansi.sub("", print_str))
-    for i in range(print_len-len(about_str)-2-3-5-len(this_author)-len(this_about)-2-1): # ~40 - ~20 < ~20?
+    for i in range(print_len-len(about_str)-2-3-5-len(this_author)-len(this_about["ver"])-2-1-1):
         about_str = about_str + " "
 
     app.printc(f"  {about_str}  Made by {app.c.BRIGHT}{this_author}  {app.c.ACCENT}{this_about["ver"]}", app.c.MID)
@@ -96,12 +96,13 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, _COMMANDS: dict):
             new_store["fancyFavourites"].append(SEL_ID)
     else:
         app.printc(f"Control Scheme:", app.c.cols["GREEN"])
-        app.printc(f"Left / Right  : A;D / J;L / 4;6 (Numpad) / Left;Right (Arrows)", app.c.cols["LIGHT_GREEN"])
-        app.printc(f"Quit          : Q   / U   / 7   (Numpad) / PageUp     (Arrows)", app.c.cols["LIGHT_GREEN"])
-        app.printc(f"Run           : S   / K   / 5   (Numpad) / Down       (Arrows)", app.c.cols["LIGHT_GREEN"])
-        app.printc(f"Run Sandboxed : W   / I   / 8   (Numpad) / Up         (Arrows)", app.c.cols["LIGHT_GREEN"])
-        app.printc(f"Show Hidden   : H (Toggle)", app.c.cols["LIGHT_GREEN"])
-        app.printc(f"Favourite     : F", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"  Left / Right  : A;D / J;L / 4;6 (Numpad) / Left;Right (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"  Quit          : Q   / U   / 7   (Numpad) / PageUp     (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"  Run           : S   / K   / 5   (Numpad) / Down       (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"  Run Sandboxed : W   / I   / 8   (Numpad) / Up         (Arrows)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"  Show Hidden   : H (Toggle)", app.c.cols["LIGHT_GREEN"])
+        app.printc(f"  Favourite     : F", app.c.cols["LIGHT_GREEN"])
+        print()
 
     if new_store is not None:
         app.printc("Saving Store...", app.c.MID)
