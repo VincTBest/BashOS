@@ -2,7 +2,9 @@ import const
 import main
 
 def get_about():
-    return {"name": "System", "desc": "A basic app launcher.", "ver": "0.1.0", "hidden": True}
+    return {"name": "System", "desc": "A basic app launcher.", "ver": "1.0.0", "hidden": True,
+        "author": "VincTBest", "upgrade_url": "https://raw.githubusercontent.com/VincTBest/BashOS/master/apps/system.py"
+    }
 
 def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
     if SANDBOXED:
@@ -28,6 +30,8 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
         print("[app_name] name")
         print("[app_name] desc")
         print("[app_name] ver")
+        print("[app_name] author")
+        print("[app_name] upgrade_url")
         print("[app_name] about")
         print("[app_name] about_kv")
     elif command[0] == "apps":
@@ -77,15 +81,18 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
                         print(new_mod.get_about()["ver"])
                     elif command[1] == "name":
                         print(new_mod.get_about()["name"])
+                    elif command[1] == "author":
+                        print(new_mod.get_about()["author"])
+                    elif command[1] == "upgrade_url":
+                        print(new_mod.get_about()["upgrade_url"])
                     elif command[1] == "desc":
                         print(new_mod.get_about()["desc"])
                     elif command[1] == "about_kv":
                         about = new_mod.get_about()
-                        # print(f"Name: {about["name"]}, Description: {about["desc"]}, Version: {about["ver"]}")
                         print(about)
                     elif command[1] == "about":
                         about = new_mod.get_about()
-                        print(f"{about["name"]}: {about["desc"]} v{about["ver"]}")
+                        print(f"{about["name"]} by {about["author"]}: {about["desc"]} v{about["ver"]}")
             except:
                 print("Command or app was not found.")
 
