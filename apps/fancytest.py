@@ -14,6 +14,8 @@ app.make_button(1, "Another Button!", dbp)
 app.make_checkbox(2, "Check me", True)
 app.make_slider(3,  1, 10, 1)
 
+LTex = fl.LTex()
+
 def get_about():
     return app.about
 
@@ -29,6 +31,10 @@ def run(MODULES: dict, STORE: dict, SANDBOXED: bool, COMMANDS: dict):
     app.display(2)
     app.display(3)
     app.separator()
+
+    box = LTex.box(4, 190, 16, False)
+    for i in box:
+        print(i)
 
     key = fl.read_input()
     app.process_nav(key)

@@ -306,3 +306,59 @@ class LTex:
         "MALE": "♂",
         "FEMALE": "♀",
     }
+
+    @staticmethod
+    def box(x, w, h, double=False):
+        """
+        Returns a list of strings representing a box.
+
+        :param x: left padding (spaces)
+        :param w: interior width
+        :param h: interior height
+        :param double: use double-line borders
+        :returns: list
+        """
+        b = LTex.DBOX if double else LTex.BOX
+        pad = " " * x
+
+        lines = [
+            pad + b["TL"] + b["H"] * w + b["TR"]
+        ]
+
+        for _ in range(h):
+            lines.append(
+                pad + b["V"] + (" " * w) + b["V"]
+            )
+
+        lines.append(
+            pad + b["BL"] + b["H"] * w + b["BR"]
+        )
+
+        return lines
+
+    @staticmethod
+    def progress(value, maximum, x, invert=False):
+        """
+        Returns a progress bar string.
+
+        :param value: current value
+        :param maximum: maximum value
+        :param x: width of the bar
+        :param invert: draw empty-first instead of full-first
+        :returns: str
+        """
+        if maximum <= 0:
+            maximum = 1
+
+        value = max(0, min(value, maximum))
+        filled = round((value / maximum) * x)
+
+        if invert:
+            left = LTex.BLOCK["LIGHT"] * (x - filled)
+            right = LTex.BLOCK["FULL"] * filled
+            return left + right
+
+        return (
+                LTex.BLOCK["FULL"] * filled +
+                LTex.BLOCK["LIGHT"] * (x - filled)
+        )
