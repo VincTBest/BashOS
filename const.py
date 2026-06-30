@@ -26,6 +26,17 @@ def init():
     DEFAULT_APP = CONFIG_FILE.value["default_app"]
 
 class Colors:
+    def __init__(self):
+        self.ACCENT = None
+        self.DARK = None
+        self.MID = None
+        self.BRIGHT = None
+        self.ERROR = None
+        self.INFO = None
+        self.SEC_INFO = None
+        self.SEC_ACCENT = None
+        self.INVISIBLE = None
+
     # Colors from: https://github.com/rene-d
     cols = {
         "BLACK" : "\033[0;30m",
