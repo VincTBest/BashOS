@@ -1,6 +1,9 @@
 import os
 import json
 
+def clamp(value, min_value, max_value):
+    return max(min_value, min(value, max_value))
+
 # Constant, throws and error when trying to change it.
 class Const:
     def __init__(self, value):
