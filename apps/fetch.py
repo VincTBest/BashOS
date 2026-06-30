@@ -21,10 +21,10 @@ def run(*args):
                 print(response.json())
             else:
                 print(c.cols["red"]+"Error! Status code: "+str(response.status_code)+"."+c.cols["RESET"])
+
+            response.close()
         except:
             print(c.cols["red"]+f"Error! Could not fetch from {action}."+c.cols["RESET"])
-
-        response.close()
     else:
         return None, const.DEFAULT_APP, None, None
 
