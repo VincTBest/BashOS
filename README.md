@@ -11,6 +11,7 @@
     - Package 'readchar'
     - Package 'requests'
     - Package 'urllib'
+    - Package 'psutil'
     - ANSI colors from https://github.com/rene-d
 
 ## How to run:

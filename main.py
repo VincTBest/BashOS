@@ -6,6 +6,8 @@ import const
 
 import readchar
 import requests
+import psutil
+import urllib
 
 START_TIME = time.time()
 MODULES = {}
