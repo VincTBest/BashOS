@@ -157,7 +157,9 @@ def main():
                 if new_store: STORE = new_store
                 if run_sandboxed: SANDBOX_NEXT = True
         except KeyError as e:
-            print("App not found!")
+            print("KeyError was raised, but caught; App not found!")
+            print(e)
+            print("")
             CURRENT_APP = const.DEFAULT_APP
             #RUNNING = False
         default = const.DEFAULT_APP
